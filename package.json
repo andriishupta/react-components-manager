@@ -19,17 +19,17 @@
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"id": "package-explorer",
-					"title": "Package Explorer",
+					"id": "react-component-manager-explorer",
+					"title": "RCM Explorer",
 					"icon": "media/dep.svg"
 				}
 			]
 		},
 		"views": {
-			"package-explorer": [
+			"react-component-manager-explorer": [
 				{
 					"id": "nodeDependencies",
-					"name": "Node Dependencies",
+					"name": "Components",
 					"icon": "media/dep.svg",
 					"contextualTitle": "Package Explorer"
 				}
