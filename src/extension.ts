@@ -1,27 +1,35 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+'use strict';
+
 import * as vscode from 'vscode';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+import { DepNodeProvider, Dependency } from './nodeDependencies';
+import { JsonOutlineProvider } from './jsonOutline';
+import { FtpExplorer } from './ftpExplorer';
+import { FileExplorer } from './fileExplorer';
+import { TestView } from './testView';
+
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "react-components-manager" is now active!');
+	// Samples of `window.registerTreeDataProvider`
+	const nodeDependenciesProvider = new DepNodeProvider(vscode.workspace.rootPath);
+	vscode.window.registerTreeDataProvider('nodeDependencies', nodeDependenciesProvider);
+	vscode.commands.registerCommand('nodeDependencies.refreshEntry', () => nodeDependenciesProvider.refresh());
+	vscode.commands.registerCommand('extension.openPackageOnNpm', moduleName => vscode.commands.executeCommand('vscode.open', vscode.Uri.parse(`https://www.npmjs.com/package/${moduleName}`)));
+	vscode.commands.registerCommand('nodeDependencies.addEntry', () => vscode.window.showInformationMessage(`Successfully called add entry.`));
+	vscode.commands.registerCommand('nodeDependencies.editEntry', (node: Dependency) => vscode.window.showInformationMessage(`Successfully called edit entry on ${node.label}.`));
+	vscode.commands.registerCommand('nodeDependencies.deleteEntry', (node: Dependency) => vscode.window.showInformationMessage(`Successfully called delete entry on ${node.label}.`));
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('react-components-manager.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+	const jsonOutlineProvider = new JsonOutlineProvider(context);
+	vscode.window.registerTreeDataProvider('jsonOutline', jsonOutlineProvider);
+	vscode.commands.registerCommand('jsonOutline.refresh', () => jsonOutlineProvider.refresh());
+	vscode.commands.registerCommand('jsonOutline.refreshNode', offset => jsonOutlineProvider.refresh(offset));
+	vscode.commands.registerCommand('jsonOutline.renameNode', offset => jsonOutlineProvider.rename(offset));
+	vscode.commands.registerCommand('extension.openJsonSelection', range => jsonOutlineProvider.select(range));
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from react-components-manager!');
-	});
+	// Samples of `window.createView`
+	new FtpExplorer(context);
+	new FileExplorer(context);
 
-	context.subscriptions.push(disposable);
+	// Test View
+	new TestView(context);
 }
-
-// this method is called when your extension is deactivated
-export function deactivate() {}
