@@ -4,17 +4,17 @@
 		"body": [
 			"import React from 'react';",
 			"import PropTypes from 'prop-types';",
-			"\n",
+			"",
 			"const $1 = ({ $2 }) => {",
 			"\treturn (",
 			"\t\t<React.Component>{ $2 }</React.Component>",
 			"\t);",
 			"}",
-			"\n",
+			"",
 			"$1.propTypes = {",
 			"\t$2: PropTypes.any,",
 			"}",
-			"\n",
+			"",
 			"export default $1;"
 		],
 		"description": "Generate RCM Component"

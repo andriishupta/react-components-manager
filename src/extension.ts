@@ -41,16 +41,15 @@ async function saveComponent() {
 	const openPath = vscode.Uri.file(filePath);
 	const doc = await vscode.workspace.openTextDocument(openPath);
 	vscode.window.showTextDocument(doc);
-	vscode.commands.executeCommand('componentManager.refreshEntry');
+	vscode.commands.executeCommand('componentManager.refresh');
 }
 
 export function activate(context: vscode.ExtensionContext) {
 
-	const componentManagerProvider = new ComponentManagerProvider(vscode.workspace.rootPath + '/src/shared'); // todo CRA sharedDir
+	const componentManagerProvider = new ComponentManagerProvider(vscode.workspace.rootPath);
 	vscode.window.registerTreeDataProvider('componentManager', componentManagerProvider);
-	vscode.commands.registerCommand('componentManager.refreshEntry', () => componentManagerProvider.refresh());
-	// vscode.commands.registerCommand('componentManager.editEntry', (component: Component) => vscode.window.showTextDocument(component.resourceUri));
-	vscode.commands.registerCommand('componentManager.editEntry', (node: Component) => vscode.window.showInformationMessage(`Successfully called edit entry.`));
+	vscode.commands.registerCommand('componentManager.refresh', () => componentManagerProvider.refresh());
+	vscode.commands.registerCommand('componentManager.editEntry', (component: Component) => vscode.window.showTextDocument(component.resourceUri));
 
 	vscode.commands.registerCommand('extension.saveComponent', saveComponent);
 }

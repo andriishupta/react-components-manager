@@ -66,14 +66,15 @@
 					"when": "editorHasSelection",
 					"group": "RCM@1"
 				}
+			],
+			"view/item/context": [
+				{
+					"command": "componentManager.editEntry",
+					"when": "view == componentManager && viewItem == component",
+					"group": "inline"
+				}
 			]
-		},
-		"view/item/context": [
-			{
-				"command": "componentManager.editEntry",
-				"when": "view == componentManager && viewItem == component"
-			}
-		]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

@@ -7,7 +7,7 @@ export class ComponentManagerProvider implements vscode.TreeDataProvider<Compone
 	private _onDidChangeTreeData: vscode.EventEmitter<Component | undefined | void> = new vscode.EventEmitter<Component | undefined | void>();
 	readonly onDidChangeTreeData: vscode.Event<Component | undefined | void> = this._onDidChangeTreeData.event;
 
-	constructor(private sharedComponentsRoot: string) {
+	constructor(private workspaceRoot: string) {
 	}
 
 	refresh(): void {
@@ -19,69 +19,22 @@ export class ComponentManagerProvider implements vscode.TreeDataProvider<Compone
 	}
 
 	getChildren(element?: Component): Thenable<Component[]> {
-		if (!this.sharedComponentsRoot) {
-			vscode.window.showInformationMessage('No shared folder');
+		if (!this.workspaceRoot) {
+			vscode.window.showInformationMessage('Not a React workspace');
 			return Promise.resolve([]);
 		}
 
 		const components = [];
-		const files = fs.readdirSync(this.sharedComponentsRoot);
+		const rootSharedPath = this.workspaceRoot + '/src/shared';
+		const files = fs.readdirSync(rootSharedPath);
 
 		files.forEach((file: string) => {
-			const uri = vscode.Uri.file(file);
+			const filePath = rootSharedPath + '/' + file;
+			const uri = vscode.Uri.file(filePath);
 			components.push(new Component(file, uri));
 		});
 
 		return Promise.resolve(components);
-		
-
-		// return Promise.resolve(this.getSharedComponents(path.join(this.workspaceRoot, 'src', 'shared', 'Button.jsx')));
-		// if (element) {
-		// 	return Promise.resolve(this.getSharedComponents(path.join(this.workspaceRoot, 'src', 'shared', 'Button.jsx')));
-		// } else {
-		// 	const packageJsonPath = path.join(this.workspaceRoot, 'package.json');
-		// 	if (this.pathExists(packageJsonPath)) {
-		// 		return Promise.resolve(this.getSharedComponents(packageJsonPath));
-		// 	} else {
-		// 		vscode.window.showInformationMessage('Workspace has no package.json');
-		// 		return Promise.resolve([]);
-		// 	}
-		// }
-
-	}
-
-	/**
-	 * Given the path to package.json, read all its dependencies and devDependencies.
-	 */
-	private getSharedComponents(sharedComponentsPath: string): Component[] {
-		if (this.pathExists(sharedComponentsPath)) {
-			const packageJson = JSON.parse(fs.readFileSync(sharedComponentsPath, 'utf-8'));
-
-			const toComponent = (name: string): Component => {
-				// if (this.pathExists(path.join(this.workspaceRoot, 'node_modules', moduleName))) {
-				return new Component(name, '' as any);
-			};
-
-			// const deps = packageJson.dependencies
-			// 	? Object.keys(packageJson.dependencies).map(dep => toComponent(dep)]))
-			// 	: [];
-			// const devDeps = packageJson.devDependencies
-			// 	? Object.keys(packageJson.devDependencies).map(dep => toComponent(dep, packageJson.devDependencies[dep]))
-			// 	: [];
-			return [];
-		} else {
-			return [];
-		}
-	}
-
-	private pathExists(p: string): boolean {
-		try {
-			fs.accessSync(p);
-		} catch (err) {
-			return false;
-		}
-
-		return true;
 	}
 }
 
