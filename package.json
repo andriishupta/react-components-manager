@@ -1,9 +1,9 @@
 {
-	"name": "custom-view-samples",
-	"displayName": "Custom view Samples",
-	"description": "Samples for VSCode's view API",
+	"name": "react-component-manager",
+	"displayName": "React Component Manager",
+	"description": "React Component Manager",
 	"version": "0.0.1",
-	"publisher": "vscode-samples",
+	"publisher": "Andrii Shupta",
 	"enableProposedApi": true,
 	"engines": {
 		"vscode": "^1.52.0"
@@ -12,10 +12,20 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onView:fileExplorer"
+		"onView:componentManager"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"snippets": [
+			{
+				"language": "javascriptreact",
+				"path": "./snippets.json"
+			},
+			{
+				"language": "javascript",
+				"path": "./snippets.json"
+			}
+		],
 		"viewsContainers": {
 			"activitybar": [
 				{
@@ -28,10 +38,10 @@
 		"views": {
 			"react-component-manager-explorer": [
 				{
-					"id": "fileExplorer",
+					"id": "componentManager",
 					"name": "Components",
 					"icon": "media/dep.svg",
-					"contextualTitle": "Package Explorer"
+					"contextualTitle": "RCM: Components Explorer"
 				}
 			]
 		},
@@ -41,19 +51,11 @@
 				"title": "RCM: Save Component"
 			},
 			{
-				"command": "fileExplorer.refreshFile",
-				"title": "Refresh",
+				"command": "componentManager.editEntry",
+				"title": "Edit",
 				"icon": {
-					"light": "resources/light/refresh.svg",
-					"dark": "resources/dark/refresh.svg"
-				}
-			},
-			{
-				"command": "fileExplorer.openFile",
-				"title": "Open",
-				"icon": {
-					"light": "resources/light/refresh.svg",
-					"dark": "resources/dark/refresh.svg"
+					"light": "resources/light/edit.svg",
+					"dark": "resources/dark/edit.svg"
 				}
 			}
 		],
@@ -68,9 +70,8 @@
 		},
 		"view/item/context": [
 			{
-				"command": "fileExplorer.openFile",
-				"when": "view == fileExplorer && viewItem == file",
-				"group": "inline"
+				"command": "componentManager.editEntry",
+				"when": "view == componentManager && viewItem == component"
 			}
 		]
 	},
@@ -85,7 +86,7 @@
 		"@types/node": "^12.12.0",
 		"@types/rimraf": "^2.0.2",
 		"@types/vscode": "^1.45.0",
-		"typescript": "^4.0.2",
+		"typescript": "^3.9.7",
 		"@typescript-eslint/eslint-plugin": "^3.0.2",
 		"@typescript-eslint/parser": "^3.0.2",
 		"eslint": "^7.1.0"
