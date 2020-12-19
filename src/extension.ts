@@ -5,8 +5,6 @@ import * as fs from 'fs';
 
 import { ComponentManagerProvider, Component } from './componentManager';
 
-const editor = vscode.window.activeTextEditor;
-
 const componentBodyTemplate = `
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -25,6 +23,7 @@ export default COMPONENT_NAME;
 `;
 
 async function saveComponent() {
+	const editor = vscode.window.activeTextEditor;
 	const componentBody = editor.document.getText(editor.selection);
 	const componentName = await vscode.window.showInputBox({
 		placeHolder: "Component's name"
