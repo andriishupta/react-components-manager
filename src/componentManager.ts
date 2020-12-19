@@ -18,7 +18,7 @@ export class ComponentManagerProvider implements vscode.TreeDataProvider<Compone
 		return element;
 	}
 
-	getChildren(element?: Component): Thenable<Component[]> {
+	getChildren(): Thenable<Component[]> {
 		if (!this.workspaceRoot) {
 			vscode.window.showInformationMessage('Not a React workspace');
 			return Promise.resolve([]);
@@ -31,7 +31,7 @@ export class ComponentManagerProvider implements vscode.TreeDataProvider<Compone
 		files.forEach((file: string) => {
 			const filePath = rootSharedPath + '/' + file;
 			const uri = vscode.Uri.file(filePath);
-			components.push(new Component(file, uri));
+			components.push(new Component(path.parse(file).name, uri));
 		});
 
 		return Promise.resolve(components);
@@ -47,7 +47,7 @@ export class Component extends vscode.TreeItem {
 		super(label, vscode.TreeItemCollapsibleState.None);
 
 		this.resourceUri = uri;
-		// this.command = { command: 'componentManager.openPreview', title: "Open Preview", arguments: [this.resourceUri] }; // todo create web view
+		this.command = { command: 'extension.applyComponent', title: "Apply Component", arguments: [this.label] };
 	}
 
 	iconPath = {

@@ -43,6 +43,15 @@ async function saveComponent() {
 	vscode.commands.executeCommand('componentManager.refresh');
 }
 
+async function applyComponent(label: string) {
+	const editor = vscode.window.activeTextEditor;
+
+	editor.edit(editBuilder => {
+		editBuilder.insert(editor.selection.active, `<${label}></${label}>`);
+		editBuilder.insert(editor.document.positionAt(0), `import ${label} from './shared/${label}';\n`);
+	}); 
+}
+
 export function activate(context: vscode.ExtensionContext) {
 
 	const componentManagerProvider = new ComponentManagerProvider(vscode.workspace.rootPath);
@@ -51,4 +60,5 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('componentManager.editEntry', (component: Component) => vscode.window.showTextDocument(component.resourceUri));
 
 	vscode.commands.registerCommand('extension.saveComponent', saveComponent);
+	vscode.commands.registerCommand('extension.applyComponent', applyComponent);
 }

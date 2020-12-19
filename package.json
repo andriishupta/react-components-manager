@@ -51,6 +51,14 @@
 				"title": "RCM: Save Component"
 			},
 			{
+				"command": "componentManager.refresh",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			},
+			{
 				"command": "componentManager.editEntry",
 				"title": "Edit",
 				"icon": {
@@ -65,6 +73,13 @@
 					"command": "extension.saveComponent",
 					"when": "editorHasSelection",
 					"group": "RCM@1"
+				}
+			],
+			"view/title": [
+				{
+					"command": "componentManager.refresh",
+					"when": "view == componentManager",
+					"group": "navigation"
 				}
 			],
 			"view/item/context": [
